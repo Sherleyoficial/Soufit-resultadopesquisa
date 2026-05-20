@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Resultados da Pesquisa de Satisfação — SoulFit Academia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F7F4;--bg2:#F1F4F2;--card:#FFFFFF;
+  --ink:#20242A;--ink2:#303741;--muted:#697280;--soft:#98A2B3;
+  --line:#E6E4DF;--line2:#EEF0EA;
+  --teal:#007C78;--teal2:#0A8F86;--tealDark:#075E56;--tealSoft:#E5F5F2;
+  --mag:#C0265C;--mag2:#D44472;--magSoft:#FBE8F0;
+  --green:#11845B;--greenSoft:#EAF8F0;
+  --amber:#B7791F;--amberSoft:#FFF5DA;
+  --red:#C2413A;--redSoft:#FDECEC;
+  --shadow:0 20px 60px rgba(16,24,40,.08);
+  --r:20px;--r2:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  font-family:"Manrope",system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 5% 10%,rgba(0,124,120,.09),transparent 28%),
+    radial-gradient(circle at 92% 5%,rgba(192,38,92,.08),transparent 26%),
+    linear-gradient(135deg,#fff 0%,var(--bg) 52%,#F4F9F7 100%);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.bg-mark{position:fixed;inset:0;pointer-events:none;opacity:.55;overflow:hidden;z-index:-1}
+.bg-mark:before{content:"";position:absolute;top:40px;left:-80px;width:240px;height:240px;border:1px solid rgba(0,124,120,.22);border-radius:50%}
+.bg-mark:after{content:"";position:absolute;right:-140px;bottom:-100px;width:340px;height:340px;border:1px solid rgba(192,38,92,.16);border-radius:50%}
+.page{max-width:960px;margin:0 auto;padding:28px 22px 56px}
+
+.header{text-align:center;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.brand-title{font-size:26px;font-weight:800;letter-spacing:6px;color:var(--tealDark);text-transform:uppercase}
+.brand-sub{font-size:11px;font-weight:800;letter-spacing:5px;color:var(--mag);text-transform:uppercase;margin-top:4px}
+.athlete-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px}
+.athlete-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--teal2));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0}
+.athlete-info{text-align:left}
+.athlete-info h1{font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--ink)}
+.athlete-info p{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
+.header-date{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--soft);text-transform:uppercase;margin-top:12px}
+
+.sticky-nav{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:4px;padding:7px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.82);backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(16,24,40,.05);margin-bottom:28px;overflow-x:auto}
+.tab{border:0;background:transparent;padding:10px 18px;border-radius:999px;color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;transition:.18s;white-space:nowrap;font-family:"Manrope",sans-serif}
+.tab:hover{color:var(--ink)}
+.tab.active{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;box-shadow:0 8px 22px rgba(0,124,120,.2)}
+
+.section{display:none}.section.active{display:block}
+
+.card{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 6px 20px rgba(16,24,40,.04);margin-bottom:16px}
+.card-label{color:var(--soft);font-size:10px;letter-spacing:1.6px;font-weight:800;text-transform:uppercase;margin-bottom:14px}
+.card h2{font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--ink);margin-bottom:10px}
+.card p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px}
+.card p strong{color:var(--ink)}
+.card p:last-child{margin-bottom:0}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.metric{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:var(--r2);padding:18px 14px;text-align:center;box-shadow:0 4px 12px rgba(16,24,40,.04)}
+.metric-val{font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1;color:var(--teal)}
+.metric-val.mag{color:var(--mag)}.metric-val.green{color:var(--green)}.metric-val.amber{color:var(--amber)}.metric-val.red{color:var(--red)}
+.metric-unit{font-size:11px;color:var(--soft);font-weight:700;margin-top:2px}
+.metric-label{font-size:11px;color:var(--muted);font-weight:700;margin-top:6px}
+
+.semaforo{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.sem{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:14px;display:flex;align-items:center;gap:10px}
+.sem-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-teal{background:var(--teal);box-shadow:0 0 6px rgba(0,124,120,.4)}
+.dot-green{background:var(--green);box-shadow:0 0 6px rgba(17,132,91,.4)}
+.dot-amber{background:var(--amber);box-shadow:0 0 6px rgba(183,121,31,.4)}
+.dot-red{background:var(--red);box-shadow:0 0 6px rgba(194,65,58,.4)}
+.dot-mag{background:var(--mag);box-shadow:0 0 6px rgba(192,38,92,.4)}
+.sem-label{font-size:11px;color:var(--muted);font-weight:600}
+.sem-val{font-size:12px;font-weight:800}
+.sv-teal{color:var(--tealDark)}.sv-green{color:var(--green)}.sv-amber{color:var(--amber)}.sv-red{color:var(--red)}.sv-mag{color:var(--mag)}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.tbl th{text-align:left;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--soft);padding:0 0 12px}
+.tbl td{padding:11px 0;border-bottom:1px solid var(--line2);color:var(--muted);font-size:13px;font-weight:600}
+.tbl td:first-child{color:var(--ink);font-weight:700}
+.tbl td:last-child{text-align:right;font-weight:800;color:var(--ink)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tr.hl td{background:var(--tealSoft);padding-left:10px;padding-right:10px}
+.tbl tr.hl td:first-child{color:var(--tealDark)}
+.tbl tr.hl td:last-child{color:var(--teal)}
+.tbl tr.warn td:last-child{color:var(--amber)}
+.tbl tr.danger td:last-child{color:var(--red)}
+.tbl tr.mag-row td:last-child{color:var(--mag)}
+.tbl td.center{text-align:center}
+.tbl td.name{color:var(--ink);font-weight:700}
+
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:11px;font-weight:800}
+.badge.teal{background:var(--tealSoft);color:var(--tealDark);border:1px solid rgba(0,124,120,.14)}
+.badge.green{background:var(--greenSoft);color:var(--green);border:1px solid rgba(17,132,91,.13)}
+.badge.amber{background:var(--amberSoft);color:var(--amber);border:1px solid rgba(183,121,31,.14)}
+.badge.red{background:var(--redSoft);color:var(--red);border:1px solid rgba(194,65,58,.14)}
+.badge.mag{background:var(--magSoft);color:var(--mag);border:1px solid rgba(192,38,92,.14)}
+
+.box{margin-top:12px;padding:16px 18px;border-radius:var(--r2);font-size:13px;line-height:1.65}
+.box strong{display:block;font-size:13px;font-weight:800;margin-bottom:4px}
+.box p{font-size:13px;margin:0;color:var(--muted)}
+.box.teal{background:var(--tealSoft);border:1px solid rgba(0,124,120,.18)}.box.teal strong{color:var(--tealDark)}
+.box.amber{background:var(--amberSoft);border:1px solid rgba(183,121,31,.2)}.box.amber strong{color:var(--amber)}
+.box.red{background:var(--redSoft);border:1px solid rgba(194,65,58,.18)}.box.red strong{color:var(--red)}
+.box.green{background:var(--greenSoft);border:1px solid rgba(17,132,91,.18)}.box.green strong{color:var(--green)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+
+/* BARRAS */
+.bar-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2)}
+.bar-row:last-child{border-bottom:none}
+.bar-name{font-size:12px;color:var(--muted);font-weight:600;width:185px;flex-shrink:0}
+.bar-track{flex:1;height:6px;background:var(--line2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.bar-val{font-size:12px;font-weight:800;color:var(--ink);width:28px;text-align:right;flex-shrink:0}
+
+/* CITAÇÕES */
+.quote-card{border-left:3px solid var(--mag);background:var(--magSoft);border-radius:0 var(--r2) var(--r2) 0;padding:14px 16px;margin-bottom:10px}
+.quote-text{font-size:13px;color:var(--ink2);font-style:italic;line-height:1.7}
+.quote-auth{font-size:11px;color:var(--muted);margin-top:6px;font-weight:700}
+
+/* POSITIVO */
+.pos-card{background:var(--greenSoft);border:1px solid rgba(17,132,91,.18);border-radius:var(--r2);padding:16px;display:flex;align-items:center;gap:16px;margin-bottom:10px}
+.pos-pct{font-size:32px;font-weight:800;color:var(--green);line-height:1;flex-shrink:0;width:64px;text-align:center}
+.pos-desc{font-size:13px;color:var(--ink2);line-height:1.6}
+.pos-desc strong{color:var(--green)}
+
+/* RISCO TABELA */
+.risk-header{background:var(--tealDark);color:#fff}
+.risk-header th{color:rgba(255,255,255,.7);padding:10px 8px}
+.tbl.risk-tbl td{padding:9px 8px;vertical-align:top}
+.tbl.risk-tbl td:last-child{text-align:center}
+.tbl.risk-tbl tr:nth-child(even) td{background:var(--bg2)}
+
+.score-red{color:var(--red);font-weight:800}
+.score-amber{color:var(--amber);font-weight:800}
+.nps-red{color:var(--red);font-weight:800}
+.nps-amber{color:var(--amber);font-weight:800}
+.nps-green{color:var(--green);font-weight:800}
+
+.plist{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.pitem{display:flex;align-items:flex-start;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:14px}
+.pnum{font-size:22px;font-weight:800;color:var(--teal);line-height:1;flex-shrink:0;width:24px}
+.ptext strong{display:block;font-size:13px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.ptext span{font-size:12px;color:var(--muted);line-height:1.6}
+
+.footer{margin-top:36px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-left{font-size:13px;font-weight:800;color:var(--tealDark)}
+.footer-left span{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-top:2px}
+.footer-right{font-size:11px;color:var(--soft);text-align:right;font-weight:600}
+
+@media(max-width:680px){
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .semaforo{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+  .sticky-nav{justify-content:flex-start;border-radius:20px}
+  .footer{flex-direction:column;align-items:flex-start}
+  .footer-right{text-align:left}
+  .bar-name{width:130px}
+}
+</style>
+</head>
+<body>
+<div class="bg-mark"></div>
+<main class="page">
+
+<header class="header">
+  <div class="brand-title">SoulFit Academia</div>
+  <div class="brand-sub">Resultados da Pesquisa de Satisfação · Maio 2026</div>
+  <div class="athlete-row">
+    <div class="athlete-avatar">SF</div>
+    <div class="athlete-info">
+      <h1>Análise Estratégica Completa</h1>
+      <p>109 respostas coletadas · Gestora: Wanessa · Consultoria: Sherley Ferreira</p>
+    </div>
+  </div>
+  <div class="header-date">Maio 2026 · Sistema Lucro Invisível™</div>
+</header>
+
+<nav class="sticky-nav">
+  <button class="tab active" onclick="showTab('visao',this)">Visão Geral</button>
+  <button class="tab" onclick="showTab('positivos',this)">Pontos Fortes</button>
+  <button class="tab" onclick="showTab('gargalos',this)">Gargalos</button>
+  <button class="tab" onclick="showTab('alunos',this)">Alunos em Risco</button>
+  <button class="tab" onclick="showTab('oportunidade',this)">Oportunidade</button>
+</nav>
+
+<!-- VISÃO GERAL -->
+<section class="section active" id="visao">
+
+  <div class="semaforo">
+    <div class="sem"><div class="sem-dot dot-green"></div><div><div class="sem-label">NPS Médio</div><div class="sem-val sv-green">9,3 — Excelente</div></div></div>
+    <div class="sem"><div class="sem-dot dot-green"></div><div><div class="sem-label">Promotores (9–10)</div><div class="sem-val sv-green">88 alunos — 81%</div></div></div>
+    <div class="sem"><div class="sem-dot dot-amber"></div><div><div class="sem-label">Neutros (7–8)</div><div class="sem-val sv-amber">17 alunos — 16%</div></div></div>
+    <div class="sem"><div class="sem-dot dot-red"></div><div><div class="sem-label">Detratores (0–6)</div><div class="sem-val sv-red">4 alunos — 4%</div></div></div>
+    <div class="sem"><div class="sem-dot dot-red"></div><div><div class="sem-label">Alto Risco</div><div class="sem-val sv-red">10 alunos — ação já</div></div></div>
+    <div class="sem"><div class="sem-dot dot-amber"></div><div><div class="sem-label">Médio Risco</div><div class="sem-val sv-amber">18 alunos — monitorar</div></div></div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="metric-val">9,3</div><div class="metric-unit">NPS médio</div><div class="metric-label">109 respostas</div></div>
+    <div class="metric"><div class="metric-val red">10</div><div class="metric-unit">alunos</div><div class="metric-label">alto risco</div></div>
+    <div class="metric"><div class="metric-val amber">18</div><div class="metric-unit">alunos</div><div class="metric-label">médio risco</div></div>
+    <div class="metric"><div class="metric-val mag">83</div><div class="metric-unit">alunos</div><div class="metric-label">potencial upgrade</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">O Paradoxo Central</div>
+    <h2>NPS 9,3 e churn de 27,8% — como isso é possível?</h2>
+    <p>A academia tem um NPS excelente. Ao mesmo tempo, perde quase <strong>3 em cada 10 alunos todo mês</strong>. Isso não é contradição — é uma armadilha.</p>
+    <p><strong>Quem cancela não responde pesquisa.</strong> Os dados refletem quem ficou. Além disso, <strong>11 alunos que deram nota 9 ou 10</strong> ainda assim relataram falta de atenção durante os treinos. Quando esse atrito acumula, a saída vem sem aviso prévio.</p>
+    <div class="box amber">
+      <strong>→ NPS alto não protege contra churn</strong>
+      <p>O aluno que some não grita antes de ir embora. Ele simplesmente para de aparecer. Por isso os dados da pesquisa precisam ser cruzados com presença no Next Fit — e os nomes em risco precisam ser contactados esta semana.</p>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-label">NPS por tempo de academia</div>
+      <table class="tbl">
+        <tr><th>Tempo</th><th style="text-align:right">NPS médio</th></tr>
+        <tr class="hl"><td>Menos de 3 meses</td><td>9,6</td></tr>
+        <tr><td>Entre 3 e 6 meses</td><td>9,3</td></tr>
+        <tr class="warn"><td>Entre 6 e 12 meses</td><td>9,1</td></tr>
+        <tr class="warn"><td>Mais de 1 ano</td><td>8,9</td></tr>
+      </table>
+      <div class="box amber" style="margin-top:14px">
+        <strong>→ Veteranos estão perdendo conexão</strong>
+        <p>Quanto mais tempo na academia, mais o NPS cai. Os alunos com mais de 1 ano são os que mais cancelam — e a pesquisa mostra por quê.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">Perfil dos respondentes</div>
+      <table class="tbl">
+        <tr><th>Faixa etária</th><th style="text-align:right">Alunos</th></tr>
+        <tr><td>20–30 anos</td><td>44</td></tr>
+        <tr><td>31–40 anos</td><td>26</td></tr>
+        <tr><td>41–50 anos</td><td>16</td></tr>
+        <tr><td>Menos de 20 anos</td><td>13</td></tr>
+        <tr><td>Acima de 50 anos</td><td>10</td></tr>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- PONTOS FORTES -->
+<section class="section" id="positivos">
+
+  <div class="card">
+    <div class="card-label">O que a SoulFit faz muito bem</div>
+    <h2>Estrutura, valor e ambiente — base sólida</h2>
+    <p>A pesquisa confirma que a SoulFit tem pontos fortes reais e consistentes. Esses números precisam ser preservados e comunicados.</p>
+  </div>
+
+  <div class="pos-card">
+    <div class="pos-pct">97%</div>
+    <div class="pos-desc">avaliam as instalações como <strong>Bom</strong> ou <strong>Excelente</strong> — 106 de 109 alunos. Espaço, equipamentos e limpeza são percebidos como diferenciais.</div>
+  </div>
+  <div class="pos-card">
+    <div class="pos-pct">97%</div>
+    <div class="pos-desc">sentem que o plano atual <strong>entrega valor pelo preço</strong> — 106 de 109. Alta percepção de custo-benefício. O aluno que paga acha que vale.</div>
+  </div>
+  <div class="pos-card">
+    <div class="pos-pct">91%</div>
+    <div class="pos-desc">avaliam a <strong>competência técnica</strong> dos instrutores como Boa ou Excelente — 99 de 109. O conhecimento está ali. O problema é a atenção proativa, não o preparo.</div>
+  </div>
+  <div class="pos-card">
+    <div class="pos-pct">84%</div>
+    <div class="pos-desc">dos novatos (menos de 3 meses) tiveram a <strong>ficha feita no primeiro dia</strong> — 21 de 25. O onboarding funciona para quem chega. Precisa funcionar também para quem fica.</div>
+  </div>
+
+  <div class="card" style="margin-top:6px">
+    <div class="card-label">O que os alunos mais valorizam na SoulFit</div>
+    <div class="bar-row"><span class="bar-name">Atendimento dos instrutores</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--teal)"></div></div><span class="bar-val">26</span></div>
+    <div class="bar-row"><span class="bar-name">Ambiente e clima da academia</span><div class="bar-track"><div class="bar-fill" style="width:96%;background:var(--teal)"></div></div><span class="bar-val">25</span></div>
+    <div class="bar-row"><span class="bar-name">Qualidade dos equipamentos</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--teal2)"></div></div><span class="bar-val">23</span></div>
+    <div class="bar-row"><span class="bar-name">Preço / custo-benefício</span><div class="bar-track"><div class="bar-fill" style="width:54%;background:var(--green)"></div></div><span class="bar-val">14</span></div>
+    <div class="bar-row"><span class="bar-name">Localização</span><div class="bar-track"><div class="bar-fill" style="width:31%;background:var(--soft)"></div></div><span class="bar-val">8</span></div>
+    <div class="box teal" style="margin-top:14px">
+      <strong>→ Atendimento é o principal ativo — e o principal risco</strong>
+      <p>O que os alunos mais valorizam é exatamente o que está sendo questionado nas respostas abertas. Manter esse ponto forte é a prioridade número um da equipe.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- GARGALOS -->
+<section class="section" id="gargalos">
+
+  <div class="card">
+    <div class="card-label">O problema que os dados confirmam</div>
+    <h2>Instrutores: o conhecimento existe — a presença proativa, não</h2>
+    <p>91% avaliam a competência técnica como boa ou excelente. Mas <strong>43 alunos</strong> relataram que a ficha demorou ou não foi feita. E <strong>25 alunos</strong> sentiram falta de atenção durante os treinos. Isso não é falta de capacidade — é falta de rotina e comprometimento.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-label">Problemas com ficha e acompanhamento</div>
+      <div class="bar-row"><span class="bar-name">Ficha demorou ou não foi feita</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--red)"></div></div><span class="bar-val">43</span></div>
+      <div class="bar-row"><span class="bar-name">Sentiram falta de atenção</span><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--amber)"></div></div><span class="bar-val">25</span></div>
+      <div class="bar-row"><span class="bar-name">Acompanhamento insuficiente</span><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--amber)"></div></div><span class="bar-val">24</span></div>
+      <div class="bar-row"><span class="bar-name">Atendimento abaixo da expectativa</span><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--red)"></div></div><span class="bar-val">5</span></div>
+      <div class="bar-row"><span class="bar-name">Ficha nunca foi feita</span><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--red)"></div></div><span class="bar-val">4</span></div>
+    </div>
+    <div class="card">
+      <div class="card-label">Motivos que levariam ao cancelamento</div>
+      <div class="bar-row"><span class="bar-name">Pretende continuar</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><span class="bar-val">43</span></div>
+      <div class="bar-row"><span class="bar-name">Aumento de preço</span><div class="bar-track"><div class="bar-fill" style="width:56%;background:var(--amber)"></div></div><span class="bar-val">24</span></div>
+      <div class="bar-row"><span class="bar-name">Falta atenção dos instrutores</span><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--red)"></div></div><span class="bar-val">13</span></div>
+      <div class="bar-row"><span class="bar-name">Problemas com equipamentos</span><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--amber)"></div></div><span class="bar-val">11</span></div>
+      <div class="bar-row"><span class="bar-name">Mudança de horário</span><div class="bar-track"><div class="bar-fill" style="width:19%;background:var(--amber)"></div></div><span class="bar-val">8</span></div>
+      <div class="bar-row"><span class="bar-name">Já pensou em cancelar</span><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--red)"></div></div><span class="bar-val">4</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">O que os alunos disseram — voz real</div>
+    <h2>Falas coletadas na pesquisa</h2>
+    <p style="margin-bottom:16px">Estas são respostas abertas, com as palavras exatas dos alunos. Representam o que eles sentem mas raramente dizem diretamente.</p>
+
+    <div class="quote-card">
+      <div class="quote-text">"Que os professores passem a fazer os exercícios ou os treinos imediatamente. Aluno pediu treino, no dia que ele pedir, faça. Tem que ser mais prático e organizado."</div>
+      <div class="quote-auth">Josinei Magalhaes Freitas · NPS 10 · 6–12 meses de academia</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Os instrutores serem mais prestativos! Sempre estão ocupados e ficam malhando em horário que deveriam estar dando suporte."</div>
+      <div class="quote-auth">Julia Tostes · NPS 6 · Mais de 1 ano · ALTO RISCO</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Na mudança de ficha precisa ter orientação dos novos exercícios! Não é só mudar a ficha — precisamos ser orientados para não ter lesão por execução incorreta. Deixo de fazer alguns exercícios por não saber como executar e não ter nenhum instrutor disponível."</div>
+      <div class="quote-auth">Izaura dos Santos Pereira · NPS 8 · Mais de 1 ano · ALTO RISCO</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Os instrutores serem mais ativos na parte de trocar de ficha. Às vezes peço, eles enrolam, aí acabo que deixo pra lá."</div>
+      <div class="quote-auth">Gabriele Bhering · NPS 10 · Mais de 1 ano · ALTO RISCO</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Se possível, realizar a troca de ficha sem necessitar que o aluno solicite."</div>
+      <div class="quote-auth">Érica S. Fagundes · NPS 10 · Mais de 1 ano</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">"Orientação aos instrutores para sempre que possível trazerem novidades em técnicas e correções — não somente aos iniciantes, mas a todos os alunos."</div>
+      <div class="quote-auth">Ezequiel Medina Fialho da Silva · NPS 9 · 3–6 meses</div>
+    </div>
+
+    <div class="box red" style="margin-top:16px">
+      <strong>→ O padrão que emerge das respostas abertas</strong>
+      <p>Os alunos não estão pedindo perfeição. Estão pedindo presença. Instrutor que responde quando chamado. Ficha trocada no dia pedido. Correção de execução nas mudanças de treino. São ações simples — e a ausência delas é o que gera evasão silenciosa.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ALUNOS EM RISCO -->
+<section class="section" id="alunos">
+
+  <div class="card">
+    <div class="card-label">Metodologia</div>
+    <h2>Como o score de risco foi calculado</h2>
+    <p>Cada aluno recebeu uma pontuação com base em: NPS baixo (+3 se ≤6, +1 se ≤8), falta de atenção relatada (+3 frequente, +1 às vezes), acompanhamento insuficiente (+2), atendimento abaixo da expectativa (+2), já pensou em cancelar (+3), plano sem valor percebido (+2).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Alto Risco — Ação Imediata (score ≥ 5)</div>
+    <p style="margin-bottom:14px;font-size:13px">Esses 10 alunos devem receber contato individual esta semana, antes de qualquer outra ação.</p>
+    <div style="overflow-x:auto">
+      <table class="tbl risk-tbl">
+        <thead class="risk-header">
+          <tr>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px">Nome</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">Horário</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">Tempo</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">NPS</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px">Principal risco</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Júlia Tostes Soares</td><td class="center">Manhã</td><td class="center">+1 ano</td><td class="center nps-red">6</td><td>Já pensou em cancelar · instrutor sem suporte</td><td class="center score-red">11</td></tr>
+          <tr><td class="name">Rayane de Fátima Santana</td><td class="center">Manhã</td><td class="center">+1 ano</td><td class="center nps-red">5</td><td>Falta de atenção com frequência</td><td class="center score-red">10</td></tr>
+          <tr><td class="name">Julia Tostes</td><td class="center">Manhã</td><td class="center">+1 ano</td><td class="center nps-red">6</td><td>Já pensou em cancelar · professor ocioso</td><td class="center score-red">10</td></tr>
+          <tr><td class="name">Izaura dos Santos Pereira</td><td class="center">Tarde</td><td class="center">+1 ano</td><td class="center nps-amber">8</td><td>Falta atenção frequente · ficha sem orientação</td><td class="center score-red">8</td></tr>
+          <tr><td class="name">Tayla Kerolaine da Silva Lopes</td><td class="center">Tarde</td><td class="center">6–12m</td><td class="center nps-amber">8</td><td>Já pensou em cancelar</td><td class="center score-red">7</td></tr>
+          <tr><td class="name">Carlos Mercês de Oliveira</td><td class="center">Tarde</td><td class="center">+1 ano</td><td class="center nps-amber">8</td><td>Já pensou em cancelar · acima de 50 anos</td><td class="center score-red">7</td></tr>
+          <tr><td class="name">Luciana Maria Maximiano Ildefonso</td><td class="center">Noite</td><td class="center">6–12m</td><td class="center nps-red">2</td><td>Detratora · NPS crítico · falta atenção</td><td class="center score-red">6</td></tr>
+          <tr><td class="name">Pedro Rodrigues Batista Júnior</td><td class="center">Noite</td><td class="center">+1 ano</td><td class="center nps-amber">8</td><td>Veterano · acúmulo de insatisfação</td><td class="center score-amber">6</td></tr>
+          <tr><td class="name">Bianca Pereira Lopes</td><td class="center">Meio-dia</td><td class="center">3–6m</td><td class="center nps-green">9</td><td>Acompanhamento insuficiente · horário ocioso</td><td class="center score-amber">5</td></tr>
+          <tr><td class="name">Gabriele Bhering</td><td class="center">Manhã</td><td class="center">+1 ano</td><td class="center nps-green">10</td><td>Veterana · ficha ignorada · sai sem avisar</td><td class="center score-amber">5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Médio Risco — Monitoramento Ativo (score 2–4)</div>
+    <p style="margin-bottom:14px;font-size:13px">Esses 18 alunos apresentam sinais de alerta que, sem ação, podem virar risco alto nas próximas semanas.</p>
+    <div style="overflow-x:auto">
+      <table class="tbl risk-tbl">
+        <thead class="risk-header">
+          <tr>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px">Nome</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">Horário</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">Tempo</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">NPS</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px">Motivo de atenção</th>
+            <th style="color:rgba(255,255,255,.8);padding:10px 8px;text-align:center">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Jaqueline Aparecida Viana</td><td class="center">Tarde</td><td class="center">+1 ano</td><td class="center nps-amber">8</td><td>Acompanhamento insuficiente · aumento de preço</td><td class="center score-amber">4</td></tr>
+          <tr><td class="name">Josivania Martins Costa</td><td class="center">Manhã</td><td class="center">&lt;3m</td><td class="center nps-amber">7</td><td>NPS 7 · novata · acompanhamento fraco</td><td class="center score-amber">4</td></tr>
+          <tr><td class="name">Vanessa Cardoso do Carmo</td><td class="center">Noite</td><td class="center">+1 ano</td><td class="center nps-amber">8</td><td>Veterana · acompanhamento insuficiente</td><td class="center score-amber">4</td></tr>
+          <tr><td class="name">Thiago Ladeira Fialho</td><td class="center">Tarde</td><td class="center">3–6m</td><td class="center nps-amber">8</td><td>Período crítico · acompanhamento raro</td><td class="center score-amber">4</td></tr>
+          <tr><td class="name">Rozeni de Freitas</td><td class="center">Manhã</td><td class="center">&lt;3m</td><td class="center nps-green">10</td><td>Novata · acompanhamento às vezes falho</td><td class="center score-amber">3</td></tr>
+          <tr><td class="name">Caroline Mol Mendes</td><td class="center">Tarde</td><td class="center">+1 ano</td><td class="center nps-amber">7</td><td>NPS 7 · veterana · acompanhamento raro</td><td class="center score-amber">3</td></tr>
+          <tr><td class="name">Celismar Generoso</td><td class="center">Manhã</td><td class="center">3–6m</td><td class="center nps-green">9</td><td>Acima de 50 anos · período crítico</td><td class="center score-amber">3</td></tr>
+          <tr><td class="name">Samuel Teixeira</td><td class="center">Noite</td><td class="center">6–12m</td><td class="center nps-amber">8</td><td>Acompanhamento insuficiente · aumento de preço</td><td class="center score-amber">3</td></tr>
+          <tr><td class="name">Bruno de Souza Pereira</td><td class="center">Manhã</td><td class="center">+1 ano</td><td class="center nps-green">10</td><td>NPS 10 mas já pensou em cancelar</td><td class="center score-amber">3</td></tr>
+          <tr><td class="name">Ezequiel Medina Fialho da Silva</td><td class="center">Noite</td><td class="center">3–6m</td><td class="center nps-green">9</td><td>Quer mais orientação técnica</td><td class="center score-amber">3</td></tr>
+          <tr><td class="name">Marcos Vinicios Miranda Lacerda</td><td class="center">Meio-dia</td><td class="center">+1 ano</td><td class="center nps-amber">8</td><td>Veterano · aumento de preço</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Matheus Bonfim</td><td class="center">Noite</td><td class="center">+1 ano</td><td class="center nps-green">9</td><td>Veterano · acompanhamento raro</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Jullya Rocha</td><td class="center">Tarde</td><td class="center">+1 ano</td><td class="center nps-green">10</td><td>Veterana · acompanhamento insuficiente</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Carlos Daniel Oliveira Silva</td><td class="center">Meio-dia</td><td class="center">&lt;3m</td><td class="center nps-green">10</td><td>Novato · problemas com equipamentos</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Glauciane Pereira</td><td class="center">Noite</td><td class="center">6–12m</td><td class="center nps-green">10</td><td>Falta atenção instrutores · acomp. às vezes</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Edinalva Bitarães</td><td class="center">Meio-dia</td><td class="center">3–6m</td><td class="center nps-green">10</td><td>Acompanhamento às vezes falho</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Diogo de Andrade</td><td class="center">Meio-dia</td><td class="center">&lt;3m</td><td class="center nps-green">10</td><td>Acompanhamento raramente · novato</td><td class="center score-amber">2</td></tr>
+          <tr><td class="name">Ruan Carlos Otoni</td><td class="center">Noite</td><td class="center">6–12m</td><td class="center nps-amber">8</td><td>NPS 8 · período intermediário</td><td class="center score-amber">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+<!-- OPORTUNIDADE -->
+<section class="section" id="oportunidade">
+
+  <div class="card">
+    <div class="card-label">Plano Premium — Potencial de Receita</div>
+    <h2>83 alunos são receptivos a um plano com mais benefícios</h2>
+    <p>Sem captar nenhum aluno novo, a SoulFit tem potencial de receita incremental dentro da própria base. A pesquisa revelou abertura real para um plano premium com avaliação física, acompanhamento personalizado e prioridade em horários.</p>
+  </div>
+
+  <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+    <div class="metric"><div class="metric-val green">29</div><div class="metric-unit">alunos</div><div class="metric-label">Sim, com certeza</div></div>
+    <div class="metric"><div class="metric-val mag">54</div><div class="metric-unit">alunos</div><div class="metric-label">Talvez, depende do valor</div></div>
+    <div class="metric"><div class="metric-val amber">83</div><div class="metric-unit">alunos</div><div class="metric-label">Total receptivo</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Simulação de receita incremental</div>
+    <table class="tbl">
+      <tr><th>Cenário</th><th style="text-align:right">Conversão</th><th style="text-align:right">Receita extra/mês</th></tr>
+      <tr><td>Conservador (10% dos 83)</td><td style="text-align:right">~8 alunos</td><td style="text-align:right">+R$ 240</td></tr>
+      <tr class="hl"><td>Realista (20% dos 83)</td><td style="text-align:right">~17 alunos</td><td style="text-align:right">+R$ 510</td></tr>
+      <tr><td>Otimista (30% dos 83)</td><td style="text-align:right">~25 alunos</td><td style="text-align:right">+R$ 750</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Simulação baseada em diferença de R$30/mês entre plano atual e plano premium.</p>
+    <div class="box teal">
+      <strong>→ Foco nos 29 que disseram "sim com certeza"</strong>
+      <p>Esses alunos já estão prontos. O próximo passo é estruturar a oferta e abordar esse grupo antes de qualquer outro.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Demandas operacionais — respostas abertas</div>
+    <h2>O que os alunos pediram com frequência</h2>
+    <div class="plist">
+      <div class="pitem"><div class="pnum">🔴</div><div class="ptext"><strong>Domingo de manhã</strong><span>10+ pedidos diretos. A demanda mais recorrente de todas. Alunos que trabalham no sábado dependem do domingo para treinar.</span></div></div>
+      <div class="pitem"><div class="pnum">🔴</div><div class="ptext"><strong>Sábado com horário estendido</strong><span>8+ pedidos. Fechar cedo no sábado está excluindo alunos que saem do trabalho tarde.</span></div></div>
+      <div class="pitem"><div class="pnum">🔴</div><div class="ptext"><strong>Troca de ficha proativa</strong><span>Vários relatos. O aluno não deveria precisar pedir. O instrutor deveria iniciar a conversa.</span></div></div>
+      <div class="pitem"><div class="pnum">🟡</div><div class="ptext"><strong>Horário do meio-dia de volta</strong><span>4 pedidos diretos. O fechamento de 12h afastou alunos que tinham esse como único horário disponível.</span></div></div>
+      <div class="pitem"><div class="pnum">🟡</div><div class="ptext"><strong>Aulas de dança / Fit Dance / funcional</strong><span>8+ pedidos. Modalidades coletivas são demanda real, especialmente entre mulheres.</span></div></div>
+      <div class="pitem"><div class="pnum">🟢</div><div class="ptext"><strong>Novos equipamentos (glúteo, ombro, funcional)</strong><span>5+ pedidos. Investimento pontual com alto impacto percebido.</span></div></div>
+    </div>
+  </div>
+
+</section>
+
+<footer class="footer">
+  <div class="footer-left">
+    Ecossistema IA Fitness™ · Sistema Lucro Invisível™
+    <span>Consultor Sherley Ferreira · SoulFit Academia · Maio 2026</span>
+  </div>
+  <div class="footer-right">
+    Análise baseada em 109 respostas<br>
+    Dados coletados via pesquisa de satisfação
+  </div>
+</footer>
+
+</main>
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
